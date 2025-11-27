@@ -3,6 +3,7 @@ import withPWA from 'next-pwa';
 
 const nextConfig: NextConfig = {
   /* config options here */
+  output: 'standalone',
   turbopack: {},
   webpack: (config, { isServer }) => {
     // Fix for better-sqlite3

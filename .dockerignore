@@ -1,0 +1,35 @@
+# Ignore node modules
+node_modules
+npm-debug.log
+
+# Ignore git
+.git
+.gitignore
+
+# Ignore Next.js build artifacts
+.next
+out
+
+# Ignore development files
+.env*.local
+.vscode
+.idea
+
+# Ignore test files
+**/*.test.ts
+**/*.test.tsx
+**/*.spec.ts
+**/*.spec.tsx
+
+# Ignore documentation
+README.md
+*.md
+
+# Ignore CI/CD files
+.github
+.gitlab-ci.yml
+
+# Ignore database (will be created at runtime)
+db/fitness.db
+db/fitness.db-shm
+db/fitness.db-wal
