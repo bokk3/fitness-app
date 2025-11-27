@@ -1,13 +1,26 @@
 import { NextResponse } from 'next/server';
 import { getDb } from '@/lib/db';
+import { auth } from '@/lib/auth';
+import { headers } from 'next/headers';
 import type { NutritionLog, NutritionLogWithFood, NutritionFood } from '@/lib/types';
+
+async function getUser() {
+  const session = await auth.api.getSession({
+    headers: await headers()
+  });
+  return session?.user;
+}
 
 // GET nutrition logs
 export async function GET(request: Request) {
   try {
+    const user = await getUser();
+    if (!user) {
+      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+    }
+    const userId = user.id;
     const { searchParams } = new URL(request.url);
     const date = searchParams.get('date');
-    const userId = 1; // TODO: Get from auth session
     
     const db = getDb();
     
@@ -82,9 +95,13 @@ export async function GET(request: Request) {
 // POST create nutrition log
 export async function POST(request: Request) {
   try {
+    const user = await getUser();
+    if (!user) {
+      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+    }
+    const userId = user.id;
     const body = await request.json();
     const { food_id, date, meal_type, servings, notes } = body;
-    const userId = 1; // TODO: Get from auth session
     
     const db = getDb();
     
@@ -103,9 +120,13 @@ export async function POST(request: Request) {
 // DELETE nutrition log
 export async function DELETE(request: Request) {
   try {
+    const user = await getUser();
+    if (!user) {
+      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+    }
+    const userId = user.id;
     const { searchParams } = new URL(request.url);
     const id = searchParams.get('id');
-    const userId = 1; // TODO: Get from auth session
     
     if (!id) {
       return NextResponse.json({ error: 'Log ID required' }, { status: 400 });

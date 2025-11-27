@@ -20,11 +20,16 @@ function initializeDatabase() {
   const schemaPath = join(process.cwd(), 'db', 'schema.sql');
   const schema = readFileSync(schemaPath, 'utf-8');
   
-  // Execute schema
-  db.exec(schema);
+  // Check if database is already initialized
+  const tableExists = db.prepare("SELECT name FROM sqlite_master WHERE type='table' AND name='user'").get();
+  
+  if (!tableExists) {
+    // Execute schema only if tables don't exist
+    db.exec(schema);
+  }
   
   // Check if we need to seed data
-  const userCount = db.prepare('SELECT COUNT(*) as count FROM users').get() as { count: number };
+  const userCount = db.prepare('SELECT COUNT(*) as count FROM user').get() as { count: number };
   
   if (userCount.count === 0) {
     seedDatabase();
@@ -37,8 +42,11 @@ function seedDatabase() {
   console.log('Seeding database...');
   
   // Create default user
-  const insertUser = db.prepare('INSERT INTO users (email, name) VALUES (?, ?)');
-  insertUser.run('demo@fitness.app', 'Demo User');
+  const insertUser = db.prepare('INSERT INTO user (id, email, name, email_verified, created_at, updated_at) VALUES (?, ?, ?, ?, ?, ?)');
+  const now = new Date().toISOString();
+  // Using a fixed UUID for demo user to ensure consistency if needed
+  const userId = 'demo-user-id'; 
+  insertUser.run(userId, 'demo@fitness.app', 'Demo User', 1, now, now);
   
   // Seed exercise library
   const exercises = [

@@ -1,20 +1,30 @@
-version: '3.8'
+version: "3.8"
 
 services:
   fitness-app:
-    image: ${DOCKERHUB_USERNAME}/fitness-app:latest
+    image: 3bok/fitness-app:latest
     container_name: fitness-app
+    restart: unless-stopped
     ports:
-      - "3000:3000"
+      - "3013:3013"
     volumes:
       - fitness-db:/app/db
     environment:
       - NODE_ENV=production
-      - PORT=3000
+      - PORT=3013
       - HOSTNAME=0.0.0.0
-    restart: unless-stopped
+    networks:
+      - staging-network
     healthcheck:
-      test: ["CMD", "wget", "--quiet", "--tries=1", "--spider", "http://localhost:3000"]
+      test:
+        [
+          "CMD",
+          "wget",
+          "--quiet",
+          "--tries=1",
+          "--spider",
+          "http://localhost:3013",
+        ]
       interval: 30s
       timeout: 10s
       retries: 3
@@ -23,3 +33,7 @@ services:
 volumes:
   fitness-db:
     driver: local
+
+networks:
+  staging-network:
+    external: true

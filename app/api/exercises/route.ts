@@ -1,10 +1,22 @@
 import { NextResponse } from 'next/server';
 import { getDb } from '@/lib/db';
+import { auth } from '@/lib/auth';
+import { headers } from 'next/headers';
 import type { Exercise } from '@/lib/types';
+
+async function getUser() {
+  const session = await auth.api.getSession({
+    headers: await headers()
+  });
+  return session?.user;
+}
 
 // GET all exercises or filter by muscle group
 export async function GET(request: Request) {
   try {
+    const user = await getUser();
+    const userId = user?.id;
+
     const { searchParams } = new URL(request.url);
     const muscleGroup = searchParams.get('muscleGroup');
     const search = searchParams.get('search');
@@ -13,18 +25,22 @@ export async function GET(request: Request) {
     
     let exercises: Exercise[];
     
+    // Base query condition to show default exercises + user's custom ones
+    const userCondition = userId ? '(is_custom = 0 OR user_id = ?)' : 'is_custom = 0';
+    const params = userId ? [userId] : [];
+    
     if (muscleGroup) {
       exercises = db.prepare(
-        'SELECT * FROM exercises WHERE muscle_group = ? ORDER BY name'
-      ).all(muscleGroup) as Exercise[];
+        `SELECT * FROM exercises WHERE muscle_group = ? AND ${userCondition} ORDER BY name`
+      ).all(muscleGroup, ...params) as Exercise[];
     } else if (search) {
       exercises = db.prepare(
-        'SELECT * FROM exercises WHERE name LIKE ? ORDER BY name'
-      ).all(`%${search}%`) as Exercise[];
+        `SELECT * FROM exercises WHERE name LIKE ? AND ${userCondition} ORDER BY name`
+      ).all(`%${search}%`, ...params) as Exercise[];
     } else {
       exercises = db.prepare(
-        'SELECT * FROM exercises ORDER BY muscle_group, name'
-      ).all() as Exercise[];
+        `SELECT * FROM exercises WHERE ${userCondition} ORDER BY muscle_group, name`
+      ).all(...params) as Exercise[];
     }
     
     return NextResponse.json(exercises);
@@ -37,9 +53,13 @@ export async function GET(request: Request) {
 // POST create custom exercise
 export async function POST(request: Request) {
   try {
+    const user = await getUser();
+    if (!user) {
+      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+    }
+    const userId = user.id;
     const body = await request.json();
     const { name, muscle_group, equipment, instructions } = body;
-    const userId = 1; // TODO: Get from auth session
     
     const db = getDb();
     
@@ -58,9 +78,13 @@ export async function POST(request: Request) {
 // DELETE custom exercise
 export async function DELETE(request: Request) {
   try {
+    const user = await getUser();
+    if (!user) {
+      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+    }
+    const userId = user.id;
     const { searchParams } = new URL(request.url);
     const id = searchParams.get('id');
-    const userId = 1; // TODO: Get from auth session
     
     if (!id) {
       return NextResponse.json({ error: 'Exercise ID required' }, { status: 400 });

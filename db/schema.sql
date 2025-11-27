@@ -1,39 +1,97 @@
 -- Fitness Tracking App Database Schema
 
--- Users table
-CREATE TABLE IF NOT EXISTS users (
-  id INTEGER PRIMARY KEY AUTOINCREMENT,
-  email TEXT UNIQUE NOT NULL,
-  name TEXT NOT NULL,
-  created_at DATETIME DEFAULT CURRENT_TIMESTAMP
+-- Drop existing tables to ensure clean state for new auth system
+DROP TABLE IF EXISTS nutrition_logs;
+DROP TABLE IF EXISTS nutrition_foods;
+DROP TABLE IF EXISTS body_measurements;
+DROP TABLE IF EXISTS goals;
+DROP TABLE IF EXISTS workout_exercises;
+DROP TABLE IF EXISTS workouts;
+DROP TABLE IF EXISTS exercises;
+DROP TABLE IF EXISTS session;
+DROP TABLE IF EXISTS account;
+DROP TABLE IF EXISTS verification;
+DROP TABLE IF EXISTS user;
+DROP TABLE IF EXISTS users;
+
+-- Better Auth Tables
+
+-- User table
+CREATE TABLE user (
+    id TEXT PRIMARY KEY,
+    name TEXT NOT NULL,
+    email TEXT NOT NULL UNIQUE,
+    email_verified BOOLEAN NOT NULL,
+    image TEXT,
+    created_at DATETIME NOT NULL,
+    updated_at DATETIME NOT NULL
 );
 
+-- Session table
+CREATE TABLE session (
+    id TEXT PRIMARY KEY,
+    expires_at DATETIME NOT NULL,
+    token TEXT NOT NULL UNIQUE,
+    created_at DATETIME NOT NULL,
+    updated_at DATETIME NOT NULL,
+    ip_address TEXT,
+    user_agent TEXT,
+    user_id TEXT NOT NULL REFERENCES user(id)
+);
+
+-- Account table
+CREATE TABLE account (
+    id TEXT PRIMARY KEY,
+    account_id TEXT NOT NULL,
+    provider_id TEXT NOT NULL,
+    user_id TEXT NOT NULL REFERENCES user(id),
+    access_token TEXT,
+    refresh_token TEXT,
+    expires_at DATETIME,
+    id_token TEXT,
+    password TEXT,
+    created_at DATETIME NOT NULL,
+    updated_at DATETIME NOT NULL
+);
+
+-- Verification table
+CREATE TABLE verification (
+    id TEXT PRIMARY KEY,
+    identifier TEXT NOT NULL,
+    value TEXT NOT NULL,
+    expires_at DATETIME NOT NULL,
+    created_at DATETIME,
+    updated_at DATETIME
+);
+
+-- App Tables
+
 -- Exercise library
-CREATE TABLE IF NOT EXISTS exercises (
+CREATE TABLE exercises (
   id INTEGER PRIMARY KEY AUTOINCREMENT,
   name TEXT NOT NULL,
   muscle_group TEXT NOT NULL, -- chest, back, legs, shoulders, arms, core, cardio
   equipment TEXT, -- barbell, dumbbell, machine, bodyweight, cable, etc.
   instructions TEXT,
   is_custom INTEGER DEFAULT 0, -- 0 for default exercises, 1 for user-created
-  user_id INTEGER,
+  user_id TEXT, -- Changed to TEXT to match user.id
   created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
-  FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
+  FOREIGN KEY (user_id) REFERENCES user(id) ON DELETE CASCADE
 );
 
 -- Workouts
-CREATE TABLE IF NOT EXISTS workouts (
+CREATE TABLE workouts (
   id INTEGER PRIMARY KEY AUTOINCREMENT,
-  user_id INTEGER NOT NULL,
+  user_id TEXT NOT NULL, -- Changed to TEXT
   date DATE NOT NULL,
   duration_minutes INTEGER, -- total workout duration
   notes TEXT,
   created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
-  FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
+  FOREIGN KEY (user_id) REFERENCES user(id) ON DELETE CASCADE
 );
 
 -- Workout exercises (individual exercises within a workout)
-CREATE TABLE IF NOT EXISTS workout_exercises (
+CREATE TABLE workout_exercises (
   id INTEGER PRIMARY KEY AUTOINCREMENT,
   workout_id INTEGER NOT NULL,
   exercise_id INTEGER NOT NULL,
@@ -47,9 +105,9 @@ CREATE TABLE IF NOT EXISTS workout_exercises (
 );
 
 -- Goals
-CREATE TABLE IF NOT EXISTS goals (
+CREATE TABLE goals (
   id INTEGER PRIMARY KEY AUTOINCREMENT,
-  user_id INTEGER NOT NULL,
+  user_id TEXT NOT NULL, -- Changed to TEXT
   type TEXT NOT NULL, -- weight_loss, muscle_gain, strength, endurance, custom
   title TEXT NOT NULL,
   description TEXT,
@@ -60,13 +118,13 @@ CREATE TABLE IF NOT EXISTS goals (
   status TEXT DEFAULT 'active', -- active, completed, abandoned
   created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
   completed_at DATETIME,
-  FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
+  FOREIGN KEY (user_id) REFERENCES user(id) ON DELETE CASCADE
 );
 
 -- Body measurements
-CREATE TABLE IF NOT EXISTS body_measurements (
+CREATE TABLE body_measurements (
   id INTEGER PRIMARY KEY AUTOINCREMENT,
-  user_id INTEGER NOT NULL,
+  user_id TEXT NOT NULL, -- Changed to TEXT
   date DATE NOT NULL,
   weight REAL, -- in kg or lbs
   body_fat_percentage REAL,
@@ -79,11 +137,11 @@ CREATE TABLE IF NOT EXISTS body_measurements (
   thigh_right REAL,
   notes TEXT,
   created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
-  FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
+  FOREIGN KEY (user_id) REFERENCES user(id) ON DELETE CASCADE
 );
 
 -- Nutrition foods database
-CREATE TABLE IF NOT EXISTS nutrition_foods (
+CREATE TABLE nutrition_foods (
   id INTEGER PRIMARY KEY AUTOINCREMENT,
   name TEXT NOT NULL,
   serving_size TEXT, -- e.g., "100g", "1 cup"
@@ -92,29 +150,29 @@ CREATE TABLE IF NOT EXISTS nutrition_foods (
   carbs REAL, -- in grams
   fat REAL, -- in grams
   is_custom INTEGER DEFAULT 0,
-  user_id INTEGER,
+  user_id TEXT, -- Changed to TEXT
   created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
-  FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
+  FOREIGN KEY (user_id) REFERENCES user(id) ON DELETE CASCADE
 );
 
 -- Nutrition logs (daily food intake)
-CREATE TABLE IF NOT EXISTS nutrition_logs (
+CREATE TABLE nutrition_logs (
   id INTEGER PRIMARY KEY AUTOINCREMENT,
-  user_id INTEGER NOT NULL,
+  user_id TEXT NOT NULL, -- Changed to TEXT
   food_id INTEGER NOT NULL,
   date DATE NOT NULL,
   meal_type TEXT, -- breakfast, lunch, dinner, snack
   servings REAL DEFAULT 1,
   notes TEXT,
   created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
-  FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE,
+  FOREIGN KEY (user_id) REFERENCES user(id) ON DELETE CASCADE,
   FOREIGN KEY (food_id) REFERENCES nutrition_foods(id) ON DELETE CASCADE
 );
 
 -- Indexes for better query performance
-CREATE INDEX IF NOT EXISTS idx_workouts_user_date ON workouts(user_id, date);
-CREATE INDEX IF NOT EXISTS idx_workout_exercises_workout ON workout_exercises(workout_id);
-CREATE INDEX IF NOT EXISTS idx_goals_user_status ON goals(user_id, status);
-CREATE INDEX IF NOT EXISTS idx_body_measurements_user_date ON body_measurements(user_id, date);
-CREATE INDEX IF NOT EXISTS idx_nutrition_logs_user_date ON nutrition_logs(user_id, date);
-CREATE INDEX IF NOT EXISTS idx_exercises_muscle_group ON exercises(muscle_group);
+CREATE INDEX idx_workouts_user_date ON workouts(user_id, date);
+CREATE INDEX idx_workout_exercises_workout ON workout_exercises(workout_id);
+CREATE INDEX idx_goals_user_status ON goals(user_id, status);
+CREATE INDEX idx_body_measurements_user_date ON body_measurements(user_id, date);
+CREATE INDEX idx_nutrition_logs_user_date ON nutrition_logs(user_id, date);
+CREATE INDEX idx_exercises_muscle_group ON exercises(muscle_group);

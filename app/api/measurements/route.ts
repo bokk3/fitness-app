@@ -1,14 +1,27 @@
 import { NextResponse } from 'next/server';
 import { getDb } from '@/lib/db';
+import { auth } from '@/lib/auth';
+import { headers } from 'next/headers';
 import type { BodyMeasurement } from '@/lib/types';
+
+async function getUser() {
+  const session = await auth.api.getSession({
+    headers: await headers()
+  });
+  return session?.user;
+}
 
 // GET all measurements
 export async function GET(request: Request) {
   try {
+    const user = await getUser();
+    if (!user) {
+      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+    }
+    const userId = user.id;
     const { searchParams } = new URL(request.url);
     const startDate = searchParams.get('startDate');
     const endDate = searchParams.get('endDate');
-    const userId = 1; // TODO: Get from auth session
     
     const db = getDb();
     
@@ -34,9 +47,13 @@ export async function GET(request: Request) {
 // POST create new measurement
 export async function POST(request: Request) {
   try {
+    const user = await getUser();
+    if (!user) {
+      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+    }
+    const userId = user.id;
     const body = await request.json();
     const { date, weight, body_fat_percentage, chest, waist, hips, bicep_left, bicep_right, thigh_left, thigh_right, notes } = body;
-    const userId = 1; // TODO: Get from auth session
     
     const db = getDb();
     
@@ -60,9 +77,13 @@ export async function POST(request: Request) {
 // DELETE measurement
 export async function DELETE(request: Request) {
   try {
+    const user = await getUser();
+    if (!user) {
+      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+    }
+    const userId = user.id;
     const { searchParams } = new URL(request.url);
     const id = searchParams.get('id');
-    const userId = 1; // TODO: Get from auth session
     
     if (!id) {
       return NextResponse.json({ error: 'Measurement ID required' }, { status: 400 });

@@ -1,10 +1,47 @@
 'use client';
 
 import Link from 'next/link';
-import { usePathname } from 'next/navigation';
+import { usePathname, useRouter } from 'next/navigation';
+import { authClient } from '@/lib/auth-client';
 
 export default function Layout({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
+  const router = useRouter();
+  const { data: session, isPending } = authClient.useSession();
+  
+  const handleSignOut = async () => {
+    await authClient.signOut({
+      fetchOptions: {
+        onSuccess: () => {
+          router.push('/signin');
+        },
+      },
+    });
+  };
+
+  // Protect routes
+  const publicRoutes = ['/signin', '/signup'];
+  const isPublicRoute = publicRoutes.includes(pathname);
+
+  if (isPending) {
+    return (
+      <div style={{ 
+        height: '100vh', 
+        display: 'flex', 
+        alignItems: 'center', 
+        justifyContent: 'center',
+        fontFamily: 'Courier New, monospace',
+        fontWeight: 'bold'
+      }}>
+        INITIALIZING SYSTEM...
+      </div>
+    );
+  }
+
+  if (!session && !isPublicRoute) {
+    router.push('/signin');
+    return null;
+  }
   
   const navLinks = [
     { href: '/', label: 'Dashboard' },
@@ -23,16 +60,38 @@ export default function Layout({ children }: { children: React.ReactNode }) {
             FITTRACK
           </Link>
           <ul className="nav-links">
-            {navLinks.map((link) => (
-              <li key={link.href}>
+            {session ? (
+              <>
+                {navLinks.map((link) => (
+                  <li key={link.href}>
+                    <Link
+                      href={link.href}
+                      className={`nav-link ${pathname === link.href ? 'active' : ''}`}
+                    >
+                      {link.label}
+                    </Link>
+                  </li>
+                ))}
+                <li>
+                  <button 
+                    onClick={handleSignOut}
+                    className="nav-link"
+                    style={{ background: 'none', border: 'none', cursor: 'pointer', color: 'var(--color-error)' }}
+                  >
+                    EXIT
+                  </button>
+                </li>
+              </>
+            ) : (
+              <li>
                 <Link
-                  href={link.href}
-                  className={`nav-link ${pathname === link.href ? 'active' : ''}`}
+                  href="/signin"
+                  className={`nav-link ${pathname === '/signin' ? 'active' : ''}`}
                 >
-                  {link.label}
+                  LOGIN
                 </Link>
               </li>
-            ))}
+            )}
           </ul>
         </div>
       </nav>

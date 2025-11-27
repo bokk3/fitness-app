@@ -1,13 +1,26 @@
 import { NextResponse } from 'next/server';
 import { getDb } from '@/lib/db';
+import { auth } from '@/lib/auth';
+import { headers } from 'next/headers';
 import type { Goal } from '@/lib/types';
+
+async function getUser() {
+  const session = await auth.api.getSession({
+    headers: await headers()
+  });
+  return session?.user;
+}
 
 // GET all goals
 export async function GET(request: Request) {
   try {
+    const user = await getUser();
+    if (!user) {
+      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+    }
+    const userId = user.id;
     const { searchParams } = new URL(request.url);
     const status = searchParams.get('status');
-    const userId = 1; // TODO: Get from auth session
     
     const db = getDb();
     
@@ -33,9 +46,13 @@ export async function GET(request: Request) {
 // POST create new goal
 export async function POST(request: Request) {
   try {
+    const user = await getUser();
+    if (!user) {
+      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+    }
+    const userId = user.id;
     const body = await request.json();
     const { type, title, description, target_value, unit, deadline } = body;
-    const userId = 1; // TODO: Get from auth session
     
     const db = getDb();
     
@@ -54,9 +71,13 @@ export async function POST(request: Request) {
 // PUT update goal
 export async function PUT(request: Request) {
   try {
+    const user = await getUser();
+    if (!user) {
+      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+    }
+    const userId = user.id;
     const body = await request.json();
     const { id, current_value, status } = body;
-    const userId = 1; // TODO: Get from auth session
     
     const db = getDb();
     
@@ -88,9 +109,13 @@ export async function PUT(request: Request) {
 // DELETE goal
 export async function DELETE(request: Request) {
   try {
+    const user = await getUser();
+    if (!user) {
+      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+    }
+    const userId = user.id;
     const { searchParams } = new URL(request.url);
     const id = searchParams.get('id');
-    const userId = 1; // TODO: Get from auth session
     
     if (!id) {
       return NextResponse.json({ error: 'Goal ID required' }, { status: 400 });
