@@ -4,6 +4,7 @@ services:
   fitness-app:
     image: 3bok/fitness-app:latest
     container_name: fitness-app
+    pull_policy: always
     restart: unless-stopped
     ports:
       - "3013:3013"
