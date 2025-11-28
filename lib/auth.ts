@@ -35,6 +35,8 @@ export const auth = betterAuth({
             userId: "user_id",
             accessToken: "access_token",
             refreshToken: "refresh_token",
+            accessTokenExpiresAt: "access_token_expires_at",
+            refreshTokenExpiresAt: "refresh_token_expires_at",
             idToken: "id_token",
             expiresAt: "expires_at",
             password: "password",

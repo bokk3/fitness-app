@@ -75,6 +75,8 @@ CREATE TABLE account (
     user_id TEXT NOT NULL REFERENCES user(id),
     access_token TEXT,
     refresh_token TEXT,
+    access_token_expires_at DATETIME,
+    refresh_token_expires_at DATETIME,
     expires_at DATETIME,
     id_token TEXT,
     password TEXT,
