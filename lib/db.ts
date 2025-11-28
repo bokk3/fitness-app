@@ -77,6 +77,7 @@ CREATE TABLE account (
     refresh_token TEXT,
     access_token_expires_at DATETIME,
     refresh_token_expires_at DATETIME,
+    scope TEXT,
     expires_at DATETIME,
     id_token TEXT,
     password TEXT,
