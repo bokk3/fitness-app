@@ -8,7 +8,15 @@ export function getDb(): Database.Database {
   if (!db) {
     db = new Database(dbPath);
     db.pragma('journal_mode = WAL');
-    initializeDatabase();
+    db.pragma('busy_timeout = 5000'); // Wait up to 5 seconds if database is locked
+    try {
+      initializeDatabase();
+    } catch (error) {
+      // Ignore errors during build phase when multiple workers compete
+      if (process.env.NODE_ENV !== 'production') {
+        console.error('Database initialization error:', error);
+      }
+    }
   }
   return db;
 }
@@ -199,18 +207,34 @@ CREATE INDEX idx_exercises_muscle_group ON exercises(muscle_group);
 `;
   
   // Check if database is already initialized
-  const tableExists = db.prepare("SELECT name FROM sqlite_master WHERE type='table' AND name='user'").get();
-  
-  if (!tableExists) {
-    // Execute schema only if tables don't exist
-    db.exec(schema);
+  try {
+    const tableExists = db.prepare("SELECT name FROM sqlite_master WHERE type='table' AND name='user'").get();
+    
+    if (!tableExists) {
+      // Execute schema only if tables don't exist
+      db.exec(schema);
+    }
+  } catch (error: unknown) {
+    // If table already exists due to race condition, that's fine
+    const err = error as { code?: string };
+    if (err.code !== 'SQLITE_SCHEMA' && err.code !== 'SQLITE_ERROR') {
+      throw error;
+    }
   }
   
   // Check if we need to seed data
-  const userCount = db.prepare('SELECT COUNT(*) as count FROM user').get() as { count: number };
-  
-  if (userCount.count === 0) {
-    seedDatabase();
+  try {
+    const userCount = db.prepare('SELECT COUNT(*) as count FROM user').get() as { count: number };
+    
+    if (userCount.count === 0) {
+      seedDatabase();
+    }
+  } catch (error: unknown) {
+    // If seeding fails due to race condition, that's fine
+    const err = error as { code?: string };
+    if (err.code !== 'SQLITE_CONSTRAINT' && err.code !== 'SQLITE_BUSY') {
+      throw error;
+    }
   }
 }
 
