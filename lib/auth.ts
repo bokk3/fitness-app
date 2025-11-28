@@ -5,7 +5,7 @@ const db = getDb();
 
 export const auth = betterAuth({
     database: db,
-    // debug: true,
+    debug: true,
     user: {
         fields: {
             emailVerified: "email_verified",
