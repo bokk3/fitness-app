@@ -8,35 +8,20 @@ export async function middleware(request: NextRequest) {
   if (
     pathname === "/signin" || 
     pathname === "/signup" || 
-    pathname === "/login" || // Keep login for backward compatibility or redirect
     pathname.startsWith("/api/auth") || 
     pathname.startsWith("/_next") || 
     pathname === "/favicon.ico" ||
+    pathname.startsWith("/icon-") || // PWA icons
     pathname.includes(".") // Static files
   ) {
     return NextResponse.next();
   }
 
-  // Check for session cookie
-  // better-auth uses "better-auth.session_token" or similar
-  // We'll fetch the session from the API to be sure
-  try {
-    const response = await fetch(`${request.nextUrl.origin}/api/auth/get-session`, {
-      headers: {
-        cookie: request.headers.get("cookie") || "",
-      },
-    });
-    
-    const session = await response.json();
-
-    if (!session) {
-      return NextResponse.redirect(new URL("/signin", request.url));
-    }
-  } catch (error) {
-    // If fetch fails (e.g. during build or server start), we might want to allow or block
-    // For safety, let's redirect to login if we can't verify
-    console.error("Auth middleware error:", error);
-    // return NextResponse.redirect(new URL("/signin", request.url));
+  // Check for session cookie (better-auth uses "better-auth.session_token")
+  const sessionToken = request.cookies.get("better-auth.session_token");
+  
+  if (!sessionToken) {
+    return NextResponse.redirect(new URL("/signin", request.url));
   }
 
   return NextResponse.next();
