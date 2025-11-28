@@ -6,6 +6,11 @@ const db = getDb();
 export const auth = betterAuth({
     database: db,
     debug: true,
+    trustedOrigins: [
+        process.env.NEXT_PUBLIC_BETTER_AUTH_URL || "http://localhost:3000",
+        process.env.NEXT_PUBLIC_APP_URL || "http://localhost:3000",
+        "https://fitness.truyens.pro" 
+    ],
     user: {
         fields: {
             emailVerified: "email_verified",
