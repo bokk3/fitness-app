@@ -219,8 +219,8 @@ function seedDatabase() {
   
   console.log('Seeding database...');
   
-  // Create default user
-  const insertUser = db.prepare('INSERT INTO user (id, email, name, email_verified, created_at, updated_at) VALUES (?, ?, ?, ?, ?, ?)');
+  // Create default user (use INSERT OR IGNORE to handle parallel builds)
+  const insertUser = db.prepare('INSERT OR IGNORE INTO user (id, email, name, email_verified, created_at, updated_at) VALUES (?, ?, ?, ?, ?, ?)');
   const now = new Date().toISOString();
   // Using a fixed UUID for demo user to ensure consistency if needed
   const userId = 'demo-user-id'; 
@@ -285,7 +285,7 @@ function seedDatabase() {
   ];
   
   const insertExercise = db.prepare(
-    'INSERT INTO exercises (name, muscle_group, equipment, instructions) VALUES (?, ?, ?, ?)'
+    'INSERT OR IGNORE INTO exercises (name, muscle_group, equipment, instructions) VALUES (?, ?, ?, ?)'
   );
   
   for (const exercise of exercises) {
@@ -307,7 +307,7 @@ function seedDatabase() {
   ];
   
   const insertFood = db.prepare(
-    'INSERT INTO nutrition_foods (name, serving_size, calories, protein, carbs, fat) VALUES (?, ?, ?, ?, ?, ?)'
+    'INSERT OR IGNORE INTO nutrition_foods (name, serving_size, calories, protein, carbs, fat) VALUES (?, ?, ?, ?, ?, ?)'
   );
   
   for (const food of foods) {
