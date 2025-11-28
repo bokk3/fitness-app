@@ -17,11 +17,20 @@ export async function middleware(request: NextRequest) {
     return NextResponse.next();
   }
 
-  // Check for session cookie (better-auth uses "better-auth.session_token")
-  const sessionToken = request.cookies.get("better-auth.session_token");
+  // Check for session cookie (better-auth uses "better-auth.session_token" or "__Secure-better-auth.session_token")
+  const sessionToken = request.cookies.get("better-auth.session_token") || 
+                       request.cookies.get("__Secure-better-auth.session_token");
+  
+  // Debug: log all cookies to see what's being sent
+  if (!sessionToken && process.env.NODE_ENV !== 'production') {
+    console.log('No session token found. All cookies:', request.cookies.getAll().map(c => c.name));
+  }
   
   if (!sessionToken) {
-    return NextResponse.redirect(new URL("/signin", request.url));
+    // Only redirect if not already on signin page to avoid loops
+    if (pathname !== '/signin') {
+      return NextResponse.redirect(new URL("/signin", request.url));
+    }
   }
 
   return NextResponse.next();
