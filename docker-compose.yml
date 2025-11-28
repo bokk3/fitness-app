@@ -10,6 +10,8 @@ services:
       - "3013:3013"
     volumes:
       - fitness-db:/app/db
+    env_file:
+      - .env
     environment:
       - NODE_ENV=production
       - PORT=3013
