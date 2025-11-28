@@ -6,15 +6,24 @@ let db: Database.Database | null = null;
 
 export function getDb(): Database.Database {
   if (!db) {
-    db = new Database(dbPath);
-    db.pragma('journal_mode = WAL');
-    db.pragma('busy_timeout = 5000'); // Wait up to 5 seconds if database is locked
     try {
+      db = new Database(dbPath);
+      db.pragma('busy_timeout = 5000'); // Set timeout FIRST
+      db.pragma('journal_mode = WAL');
+      
       initializeDatabase();
     } catch (error) {
       // Ignore errors during build phase when multiple workers compete
+      // If db was created but init failed, we still return it
       if (process.env.NODE_ENV !== 'production') {
         console.error('Database initialization error:', error);
+      }
+      
+      // If we failed to create the db instance, we must throw or return null (but type says Database)
+      // In build context, it's better to swallow and hope the other worker succeeded
+      if (!db) {
+         // Fallback to a new instance if the first one failed completely (unlikely)
+         db = new Database(dbPath);
       }
     }
   }
