@@ -31,7 +31,7 @@ export default function SignUp() {
         router.push('/');
         router.refresh();
       }
-    } catch (err) {
+    } catch (_) {
       setError("Er is een onverwachte fout opgetreden");
     } finally {
       setLoading(false);
@@ -40,7 +40,7 @@ export default function SignUp() {
 
   return (
 
-    <div className="w-full max-w-md p-8 border-4 border-black bg-white shadow-[8px_8px_0px_0px_rgba(0,0,0,1)]">
+    <div className="w-full max-w-lg p-8 border-4 border-black bg-white shadow-[8px_8px_0px_0px_rgba(0,0,0,1)]">
       <h1 className="text-4xl font-bold mb-8 text-center uppercase tracking-tighter">REGISTREREN</h1>
       
       {error && (
