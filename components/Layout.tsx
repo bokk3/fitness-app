@@ -33,7 +33,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
         fontFamily: 'Courier New, monospace',
         fontWeight: 'bold'
       }}>
-        INITIALIZING SYSTEM...
+        SYSTEEM INITIALISEREN...
       </div>
     );
   }
@@ -46,10 +46,10 @@ export default function Layout({ children }: { children: React.ReactNode }) {
   const navLinks = [
     { href: '/', label: 'Dashboard' },
     { href: '/workouts', label: 'Workouts' },
-    { href: '/exercises', label: 'Exercises' },
-    { href: '/progress', label: 'Progress' },
-    { href: '/goals', label: 'Goals' },
-    { href: '/nutrition', label: 'Nutrition' },
+    { href: '/exercises', label: 'Oefeningen' },
+    { href: '/progress', label: 'Voortgang' },
+    { href: '/goals', label: 'Doelen' },
+    { href: '/nutrition', label: 'Voeding' },
   ];
   
   return (
@@ -78,7 +78,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
                     className="nav-link"
                     style={{ background: 'none', border: 'none', cursor: 'pointer', color: 'var(--color-error)' }}
                   >
-                    EXIT
+                    UITLOGGEN
                   </button>
                 </li>
               </>
@@ -88,7 +88,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
                   href="/signin"
                   className={`nav-link ${pathname === '/signin' ? 'active' : ''}`}
                 >
-                  LOGIN
+                  INLOGGEN
                 </Link>
               </li>
             )}
@@ -106,7 +106,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
       }}>
         <div className="container">
           <p style={{ margin: 0, fontWeight: 700, textTransform: 'uppercase', fontSize: '0.875rem' }}>
-            FITTRACK © 2025 - TRACK YOUR GAINS
+            FITTRACK © 2025 - HOUD JE VOORTGANG BIJ
           </p>
         </div>
       </footer>

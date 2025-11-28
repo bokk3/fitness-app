@@ -15,6 +15,13 @@ export default function NutritionTracker() {
     notes: ''
   });
 
+  const mealTypeLabels: Record<string, string> = {
+    breakfast: 'Ontbijt',
+    lunch: 'Lunch',
+    dinner: 'Diner',
+    snack: 'Tussendoortje'
+  };
+
   const fetchFoods = async () => {
     const res = await fetch('/api/foods');
     const data = await res.json();
@@ -40,7 +47,7 @@ export default function NutritionTracker() {
     e.preventDefault();
     
     if (formData.food_id === 0) {
-      alert('Please select a food');
+      alert('Selecteer een voedingsmiddel');
       return;
     }
 
@@ -93,43 +100,43 @@ export default function NutritionTracker() {
           style={{ flex: '0 0 auto' }}
         />
         <button onClick={() => setShowForm(!showForm)} className="btn btn-primary">
-          {showForm ? 'CANCEL' : '+ LOG FOOD'}
+          {showForm ? 'ANNULEREN' : '+ VOEDING LOGGEN'}
         </button>
       </div>
 
       <div className="grid grid-2" style={{ marginBottom: 'var(--spacing-lg)' }}>
         <div className="stat-card">
           <div className="stat-value">{Math.round(totals.calories)}</div>
-          <div className="stat-label">Calories</div>
+          <div className="stat-label">Calorieën</div>
         </div>
         <div className="stat-card">
           <div className="stat-value">{Math.round(totals.protein)}g</div>
-          <div className="stat-label">Protein</div>
+          <div className="stat-label">Eiwitten</div>
         </div>
         <div className="stat-card">
           <div className="stat-value">{Math.round(totals.carbs)}g</div>
-          <div className="stat-label">Carbs</div>
+          <div className="stat-label">Koolhydraten</div>
         </div>
         <div className="stat-card">
           <div className="stat-value">{Math.round(totals.fat)}g</div>
-          <div className="stat-label">Fat</div>
+          <div className="stat-label">Vetten</div>
         </div>
       </div>
 
       {showForm && (
         <div className="card" style={{ marginBottom: 'var(--spacing-lg)' }}>
           <div className="card-header">
-            <h3 className="card-title">Log Food</h3>
+            <h3 className="card-title">Voeding Loggen</h3>
           </div>
           <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: 'var(--spacing-md)' }}>
             <div>
-              <label>Food</label>
+              <label>Voeding</label>
               <select
                 value={formData.food_id}
                 onChange={(e) => setFormData({ ...formData, food_id: Number(e.target.value) })}
                 required
               >
-                <option value={0}>Select food...</option>
+                <option value={0}>Selecteer voeding...</option>
                 {foods.map(food => (
                   <option key={food.id} value={food.id}>
                     {food.name} ({food.calories} cal, {food.serving_size})
@@ -139,19 +146,19 @@ export default function NutritionTracker() {
             </div>
             <div className="grid grid-2">
               <div>
-                <label>Meal Type</label>
+                <label>Maaltijdtype</label>
                 <select
                   value={formData.meal_type}
                   onChange={(e) => setFormData({ ...formData, meal_type: e.target.value as typeof formData.meal_type })}
                 >
-                  <option value="breakfast">Breakfast</option>
+                  <option value="breakfast">Ontbijt</option>
                   <option value="lunch">Lunch</option>
-                  <option value="dinner">Dinner</option>
-                  <option value="snack">Snack</option>
+                  <option value="dinner">Diner</option>
+                  <option value="snack">Tussendoortje</option>
                 </select>
               </div>
               <div>
-                <label>Servings</label>
+                <label>Porties</label>
                 <input
                   type="number"
                   value={formData.servings}
@@ -163,16 +170,16 @@ export default function NutritionTracker() {
               </div>
             </div>
             <div>
-              <label>Notes</label>
+              <label>Notities</label>
               <input
                 type="text"
                 value={formData.notes}
                 onChange={(e) => setFormData({ ...formData, notes: e.target.value })}
-                placeholder="Optional notes..."
+                placeholder="Optionele notities..."
               />
             </div>
             <button type="submit" className="btn btn-primary btn-large">
-              LOG FOOD
+              VOEDING LOGGEN
             </button>
           </form>
         </div>
@@ -184,17 +191,17 @@ export default function NutritionTracker() {
 
         return (
           <div key={mealType} style={{ marginBottom: 'var(--spacing-lg)' }}>
-            <h3 style={{ marginBottom: 'var(--spacing-sm)' }}>{mealType.toUpperCase()}</h3>
+            <h3 style={{ marginBottom: 'var(--spacing-sm)' }}>{mealTypeLabels[mealType].toUpperCase()}</h3>
             <table>
               <thead>
                 <tr>
-                  <th>Food</th>
-                  <th>Servings</th>
-                  <th>Calories</th>
-                  <th>Protein</th>
-                  <th>Carbs</th>
-                  <th>Fat</th>
-                  <th>Action</th>
+                  <th>Voeding</th>
+                  <th>Porties</th>
+                  <th>Calorieën</th>
+                  <th>Eiwitten</th>
+                  <th>Koolhydraten</th>
+                  <th>Vetten</th>
+                  <th>Actie</th>
                 </tr>
               </thead>
               <tbody>
@@ -208,7 +215,7 @@ export default function NutritionTracker() {
                     <td>{Math.round(log.food.fat * log.servings)}g</td>
                     <td>
                       <button onClick={() => deleteLog(log.id)} className="btn btn-small">
-                        Delete
+                        Verwijderen
                       </button>
                     </td>
                   </tr>
@@ -221,7 +228,7 @@ export default function NutritionTracker() {
 
       {logs.length === 0 && (
         <div className="card" style={{ textAlign: 'center', padding: 'var(--spacing-lg)' }}>
-          <p style={{ margin: 0, fontWeight: 700 }}>NO FOOD LOGGED FOR THIS DAY</p>
+          <p style={{ margin: 0, fontWeight: 700 }}>GEEN VOEDING GELOGD VOOR DEZE DAG</p>
         </div>
       )}
     </div>

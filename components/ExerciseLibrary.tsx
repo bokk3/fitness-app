@@ -6,10 +6,10 @@ import type { Exercise } from '@/lib/types';
 export default function ExerciseLibrary() {
   const [exercises, setExercises] = useState<Exercise[]>([]);
   const [filteredExercises, setFilteredExercises] = useState<Exercise[]>([]);
-  const [selectedMuscleGroup, setSelectedMuscleGroup] = useState<string>('all');
+  const [selectedMuscleGroup, setSelectedMuscleGroup] = useState<string>('alle');
   const [searchTerm, setSearchTerm] = useState('');
 
-  const muscleGroups = ['all', 'chest', 'back', 'legs', 'shoulders', 'arms', 'core', 'cardio'];
+  const muscleGroups = ['alle', 'borst', 'rug', 'benen', 'schouders', 'armen', 'buikspieren', 'cardio'];
 
   const fetchExercises = async () => {
     const res = await fetch('/api/exercises');
@@ -20,7 +20,7 @@ export default function ExerciseLibrary() {
   const filterExercises = () => {
     let filtered = exercises;
 
-    if (selectedMuscleGroup !== 'all') {
+    if (selectedMuscleGroup !== 'alle') {
       filtered = filtered.filter(ex => ex.muscle_group === selectedMuscleGroup);
     }
 
@@ -58,7 +58,7 @@ export default function ExerciseLibrary() {
         </div>
         <input
           type="text"
-          placeholder="Search exercises..."
+          placeholder="Zoek oefeningen..."
           value={searchTerm}
           onChange={(e) => setSearchTerm(e.target.value)}
         />
@@ -102,7 +102,7 @@ export default function ExerciseLibrary() {
       {filteredExercises.length === 0 && (
         <div className="card" style={{ textAlign: 'center', padding: 'var(--spacing-lg)' }}>
           <p style={{ fontSize: '1.25rem', fontWeight: 700, margin: 0 }}>
-            NO EXERCISES FOUND
+            GEEN OEFENINGEN GEVONDEN
           </p>
         </div>
       )}

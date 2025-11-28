@@ -5,7 +5,7 @@ import Layout from "@/components/Layout";
 
 export const metadata: Metadata = {
   title: "FitTrack - Fitness Tracking App",
-  description: "Track your workouts, nutrition, and progress with FitTrack",
+  description: "Houd je trainingen, voeding en voortgang bij met FitTrack",
   manifest: "/manifest.json",
   appleWebApp: {
     capable: true,
@@ -27,7 +27,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
+    <html lang="nl">
       <body>
         <Layout>{children}</Layout>
       </body>

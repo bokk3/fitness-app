@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import { startOfMonth, endOfMonth, eachDayOfInterval, format, isSameMonth, isToday, startOfWeek, endOfWeek } from 'date-fns';
+import { nl } from 'date-fns/locale';
 import type { Workout } from '@/lib/types';
 
 export default function Calendar({ onDateClick }: { onDateClick?: (date: string) => void }) {
@@ -30,7 +31,7 @@ export default function Calendar({ onDateClick }: { onDateClick?: (date: string)
   const calendarEnd = endOfWeek(monthEnd);
   
   const days = eachDayOfInterval({ start: calendarStart, end: calendarEnd });
-  const weekDays = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+  const weekDays = ['Zo', 'Ma', 'Di', 'Wo', 'Do', 'Vr', 'Za'];
 
   const previousMonth = () => {
     setCurrentDate(new Date(currentDate.getFullYear(), currentDate.getMonth() - 1));
@@ -51,13 +52,13 @@ export default function Calendar({ onDateClick }: { onDateClick?: (date: string)
     <div className="calendar">
       <div className="calendar-header">
         <button onClick={previousMonth} className="btn btn-small">
-          ← PREV
+          ← VORIGE
         </button>
         <h3 style={{ margin: 0, fontSize: '1.5rem' }}>
-          {format(currentDate, 'MMMM yyyy').toUpperCase()}
+          {format(currentDate, 'MMMM yyyy', { locale: nl }).toUpperCase()}
         </h3>
         <button onClick={nextMonth} className="btn btn-small">
-          NEXT →
+          VOLGENDE →
         </button>
       </div>
 

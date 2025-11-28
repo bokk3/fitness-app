@@ -71,7 +71,7 @@ export default function MeasurementTracker() {
   };
 
   const deleteMeasurement = async (id: number) => {
-    if (!confirm('Delete this measurement?')) return;
+    if (!confirm('Deze meting verwijderen?')) return;
     await fetch(`/api/measurements?id=${id}`, { method: 'DELETE' });
     fetchMeasurements();
   };
@@ -80,18 +80,18 @@ export default function MeasurementTracker() {
     <div>
       <div style={{ marginBottom: 'var(--spacing-md)' }}>
         <button onClick={() => setShowForm(!showForm)} className="btn btn-primary">
-          {showForm ? 'CANCEL' : '+ LOG MEASUREMENT'}
+          {showForm ? 'ANNULEREN' : '+ METING LOGGEN'}
         </button>
       </div>
 
       {showForm && (
         <div className="card" style={{ marginBottom: 'var(--spacing-lg)' }}>
           <div className="card-header">
-            <h3 className="card-title">Log Measurement</h3>
+            <h3 className="card-title">Meting Loggen</h3>
           </div>
           <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: 'var(--spacing-md)' }}>
             <div>
-              <label>Date</label>
+              <label>Datum</label>
               <input
                 type="date"
                 value={formData.date}
@@ -101,7 +101,7 @@ export default function MeasurementTracker() {
             </div>
             <div className="grid grid-2">
               <div>
-                <label>Weight (kg)</label>
+                <label>Gewicht (kg)</label>
                 <input
                   type="number"
                   value={formData.weight}
@@ -111,7 +111,7 @@ export default function MeasurementTracker() {
                 />
               </div>
               <div>
-                <label>Body Fat %</label>
+                <label>Vetpercentage %</label>
                 <input
                   type="number"
                   value={formData.body_fat_percentage}
@@ -121,10 +121,10 @@ export default function MeasurementTracker() {
                 />
               </div>
             </div>
-            <h4>Body Measurements (cm)</h4>
+            <h4>Lichaamsmetingen (cm)</h4>
             <div className="grid grid-3">
               <div>
-                <label>Chest</label>
+                <label>Borst</label>
                 <input
                   type="number"
                   value={formData.chest}
@@ -133,7 +133,7 @@ export default function MeasurementTracker() {
                 />
               </div>
               <div>
-                <label>Waist</label>
+                <label>Taille</label>
                 <input
                   type="number"
                   value={formData.waist}
@@ -142,7 +142,7 @@ export default function MeasurementTracker() {
                 />
               </div>
               <div>
-                <label>Hips</label>
+                <label>Heupen</label>
                 <input
                   type="number"
                   value={formData.hips}
@@ -151,7 +151,7 @@ export default function MeasurementTracker() {
                 />
               </div>
               <div>
-                <label>Bicep (L)</label>
+                <label>Biceps (L)</label>
                 <input
                   type="number"
                   value={formData.bicep_left}
@@ -160,7 +160,7 @@ export default function MeasurementTracker() {
                 />
               </div>
               <div>
-                <label>Bicep (R)</label>
+                <label>Biceps (R)</label>
                 <input
                   type="number"
                   value={formData.bicep_right}
@@ -169,7 +169,7 @@ export default function MeasurementTracker() {
                 />
               </div>
               <div>
-                <label>Thigh (L)</label>
+                <label>Bovenbeen (L)</label>
                 <input
                   type="number"
                   value={formData.thigh_left}
@@ -178,7 +178,7 @@ export default function MeasurementTracker() {
                 />
               </div>
               <div>
-                <label>Thigh (R)</label>
+                <label>Bovenbeen (R)</label>
                 <input
                   type="number"
                   value={formData.thigh_right}
@@ -188,16 +188,16 @@ export default function MeasurementTracker() {
               </div>
             </div>
             <div>
-              <label>Notes</label>
+              <label>Notities</label>
               <textarea
                 value={formData.notes}
                 onChange={(e) => setFormData({ ...formData, notes: e.target.value })}
-                placeholder="Optional notes..."
+                placeholder="Optionele notities..."
                 rows={2}
               />
             </div>
             <button type="submit" className="btn btn-primary btn-large">
-              SAVE MEASUREMENT
+              METING OPSLAAN
             </button>
           </form>
         </div>
@@ -207,13 +207,13 @@ export default function MeasurementTracker() {
         <table>
           <thead>
             <tr>
-              <th>Date</th>
-              <th>Weight</th>
-              <th>BF%</th>
-              <th>Chest</th>
-              <th>Waist</th>
-              <th>Hips</th>
-              <th>Action</th>
+              <th>Datum</th>
+              <th>Gewicht</th>
+              <th>Vet%</th>
+              <th>Borst</th>
+              <th>Taille</th>
+              <th>Heupen</th>
+              <th>Actie</th>
             </tr>
           </thead>
           <tbody>
@@ -227,7 +227,7 @@ export default function MeasurementTracker() {
                 <td>{m.hips ? `${m.hips} cm` : '--'}</td>
                 <td>
                   <button onClick={() => deleteMeasurement(m.id)} className="btn btn-small">
-                    Delete
+                    Verwijderen
                   </button>
                 </td>
               </tr>
@@ -236,7 +236,7 @@ export default function MeasurementTracker() {
         </table>
       ) : (
         <div className="card" style={{ textAlign: 'center', padding: 'var(--spacing-lg)' }}>
-          <p style={{ margin: 0, fontWeight: 700 }}>NO MEASUREMENTS YET</p>
+          <p style={{ margin: 0, fontWeight: 700 }}>NOG GEEN METINGEN</p>
         </div>
       )}
     </div>

@@ -264,60 +264,60 @@ function seedDatabase() {
   
   // Seed exercise library
   const exercises = [
-    // Chest
-    { name: 'Bench Press', muscle_group: 'chest', equipment: 'barbell', instructions: 'Lie on bench, lower bar to chest, press up' },
-    { name: 'Incline Dumbbell Press', muscle_group: 'chest', equipment: 'dumbbell', instructions: 'Press dumbbells on incline bench' },
-    { name: 'Push-ups', muscle_group: 'chest', equipment: 'bodyweight', instructions: 'Lower body to ground, push back up' },
-    { name: 'Cable Flyes', muscle_group: 'chest', equipment: 'cable', instructions: 'Pull cables together in front of chest' },
-    { name: 'Dips', muscle_group: 'chest', equipment: 'bodyweight', instructions: 'Lower body between parallel bars, push up' },
+    // Borst
+    { name: 'Bankdrukken', muscle_group: 'borst', equipment: 'halter', instructions: 'Lig op de bank, laat de stang zakken tot de borst, duw omhoog' },
+    { name: 'Schuin Bankdrukken (Dumbbell)', muscle_group: 'borst', equipment: 'dumbbell', instructions: 'Druk dumbbells op een schuine bank' },
+    { name: 'Opdrukken', muscle_group: 'borst', equipment: 'lichaamsgewicht', instructions: 'Laat het lichaam zakken tot de grond, duw weer omhoog' },
+    { name: 'Cable Flyes', muscle_group: 'borst', equipment: 'kabel', instructions: 'Trek kabels naar elkaar toe voor de borst' },
+    { name: 'Dips', muscle_group: 'borst', equipment: 'lichaamsgewicht', instructions: 'Laat het lichaam zakken tussen parallelle stangen, duw omhoog' },
     
-    // Back
-    { name: 'Deadlift', muscle_group: 'back', equipment: 'barbell', instructions: 'Lift bar from ground to standing position' },
-    { name: 'Pull-ups', muscle_group: 'back', equipment: 'bodyweight', instructions: 'Pull body up to bar, lower down' },
-    { name: 'Barbell Row', muscle_group: 'back', equipment: 'barbell', instructions: 'Bend over, pull bar to chest' },
-    { name: 'Lat Pulldown', muscle_group: 'back', equipment: 'machine', instructions: 'Pull bar down to chest' },
-    { name: 'Seated Cable Row', muscle_group: 'back', equipment: 'cable', instructions: 'Pull cable to torso while seated' },
-    { name: 'T-Bar Row', muscle_group: 'back', equipment: 'barbell', instructions: 'Pull loaded bar to chest' },
+    // Rug
+    { name: 'Deadlift', muscle_group: 'rug', equipment: 'halter', instructions: 'Til de stang van de grond naar staande positie' },
+    { name: 'Pull-ups', muscle_group: 'rug', equipment: 'lichaamsgewicht', instructions: 'Trek het lichaam op aan de stang, laat zakken' },
+    { name: 'Barbell Row', muscle_group: 'rug', equipment: 'halter', instructions: 'Buig voorover, trek de stang naar de borst' },
+    { name: 'Lat Pulldown', muscle_group: 'rug', equipment: 'machine', instructions: 'Trek de stang naar beneden tot de borst' },
+    { name: 'Zittend Kabelroeien', muscle_group: 'rug', equipment: 'kabel', instructions: 'Trek de kabel naar de romp terwijl je zit' },
+    { name: 'T-Bar Row', muscle_group: 'rug', equipment: 'halter', instructions: 'Trek de geladen stang naar de borst' },
     
-    // Legs
-    { name: 'Squat', muscle_group: 'legs', equipment: 'barbell', instructions: 'Lower hips from standing, return to standing' },
-    { name: 'Leg Press', muscle_group: 'legs', equipment: 'machine', instructions: 'Push platform away with feet' },
-    { name: 'Romanian Deadlift', muscle_group: 'legs', equipment: 'barbell', instructions: 'Lower bar while keeping legs straight' },
-    { name: 'Leg Curl', muscle_group: 'legs', equipment: 'machine', instructions: 'Curl legs up against resistance' },
-    { name: 'Leg Extension', muscle_group: 'legs', equipment: 'machine', instructions: 'Extend legs against resistance' },
-    { name: 'Lunges', muscle_group: 'legs', equipment: 'bodyweight', instructions: 'Step forward, lower back knee, return' },
-    { name: 'Calf Raises', muscle_group: 'legs', equipment: 'bodyweight', instructions: 'Raise heels off ground, lower down' },
+    // Benen
+    { name: 'Squat', muscle_group: 'benen', equipment: 'halter', instructions: 'Laat de heupen zakken vanuit stand, keer terug naar stand' },
+    { name: 'Leg Press', muscle_group: 'benen', equipment: 'machine', instructions: 'Duw het platform weg met de voeten' },
+    { name: 'Roemeense Deadlift', muscle_group: 'benen', equipment: 'halter', instructions: 'Laat de stang zakken met gestrekte benen' },
+    { name: 'Leg Curl', muscle_group: 'benen', equipment: 'machine', instructions: 'Krul de benen omhoog tegen weerstand' },
+    { name: 'Leg Extension', muscle_group: 'benen', equipment: 'machine', instructions: 'Strek de benen tegen weerstand' },
+    { name: 'Lunges', muscle_group: 'benen', equipment: 'lichaamsgewicht', instructions: 'Stap naar voren, laat achterste knie zakken, keer terug' },
+    { name: 'Calf Raises', muscle_group: 'benen', equipment: 'lichaamsgewicht', instructions: 'Til hielen van de grond, laat zakken' },
     
-    // Shoulders
-    { name: 'Overhead Press', muscle_group: 'shoulders', equipment: 'barbell', instructions: 'Press bar overhead from shoulders' },
-    { name: 'Dumbbell Shoulder Press', muscle_group: 'shoulders', equipment: 'dumbbell', instructions: 'Press dumbbells overhead' },
-    { name: 'Lateral Raises', muscle_group: 'shoulders', equipment: 'dumbbell', instructions: 'Raise dumbbells to sides' },
-    { name: 'Front Raises', muscle_group: 'shoulders', equipment: 'dumbbell', instructions: 'Raise dumbbells to front' },
-    { name: 'Face Pulls', muscle_group: 'shoulders', equipment: 'cable', instructions: 'Pull cable to face level' },
-    { name: 'Arnold Press', muscle_group: 'shoulders', equipment: 'dumbbell', instructions: 'Press dumbbells with rotation' },
+    // Schouders
+    { name: 'Overhead Press', muscle_group: 'schouders', equipment: 'halter', instructions: 'Druk de stang boven het hoofd vanuit de schouders' },
+    { name: 'Dumbbell Shoulder Press', muscle_group: 'schouders', equipment: 'dumbbell', instructions: 'Druk dumbbells boven het hoofd' },
+    { name: 'Lateral Raises', muscle_group: 'schouders', equipment: 'dumbbell', instructions: 'Til dumbbells zijwaarts op' },
+    { name: 'Front Raises', muscle_group: 'schouders', equipment: 'dumbbell', instructions: 'Til dumbbells naar voren op' },
+    { name: 'Face Pulls', muscle_group: 'schouders', equipment: 'kabel', instructions: 'Trek de kabel naar gezichtshoogte' },
+    { name: 'Arnold Press', muscle_group: 'schouders', equipment: 'dumbbell', instructions: 'Druk dumbbells met rotatie' },
     
-    // Arms
-    { name: 'Barbell Curl', muscle_group: 'arms', equipment: 'barbell', instructions: 'Curl bar to shoulders' },
-    { name: 'Tricep Dips', muscle_group: 'arms', equipment: 'bodyweight', instructions: 'Lower and raise body on parallel bars' },
-    { name: 'Hammer Curls', muscle_group: 'arms', equipment: 'dumbbell', instructions: 'Curl dumbbells with neutral grip' },
-    { name: 'Tricep Pushdown', muscle_group: 'arms', equipment: 'cable', instructions: 'Push cable down to extend arms' },
-    { name: 'Skull Crushers', muscle_group: 'arms', equipment: 'barbell', instructions: 'Lower bar to forehead, extend arms' },
-    { name: 'Preacher Curl', muscle_group: 'arms', equipment: 'barbell', instructions: 'Curl bar on preacher bench' },
+    // Armen
+    { name: 'Barbell Curl', muscle_group: 'armen', equipment: 'halter', instructions: 'Krul de stang naar de schouders' },
+    { name: 'Tricep Dips', muscle_group: 'armen', equipment: 'lichaamsgewicht', instructions: 'Laat het lichaam zakken en duw op aan parallelle stangen' },
+    { name: 'Hammer Curls', muscle_group: 'armen', equipment: 'dumbbell', instructions: 'Krul dumbbells met neutrale greep' },
+    { name: 'Tricep Pushdown', muscle_group: 'armen', equipment: 'kabel', instructions: 'Duw de kabel naar beneden om armen te strekken' },
+    { name: 'Skull Crushers', muscle_group: 'armen', equipment: 'halter', instructions: 'Laat de stang naar het voorhoofd zakken, strek armen' },
+    { name: 'Preacher Curl', muscle_group: 'armen', equipment: 'halter', instructions: 'Krul de stang op een preacher bank' },
     
-    // Core
-    { name: 'Plank', muscle_group: 'core', equipment: 'bodyweight', instructions: 'Hold body straight in push-up position' },
-    { name: 'Crunches', muscle_group: 'core', equipment: 'bodyweight', instructions: 'Curl upper body towards knees' },
-    { name: 'Russian Twists', muscle_group: 'core', equipment: 'bodyweight', instructions: 'Rotate torso side to side' },
-    { name: 'Hanging Leg Raises', muscle_group: 'core', equipment: 'bodyweight', instructions: 'Raise legs while hanging from bar' },
-    { name: 'Cable Crunches', muscle_group: 'core', equipment: 'cable', instructions: 'Crunch down with cable resistance' },
-    { name: 'Ab Wheel', muscle_group: 'core', equipment: 'bodyweight', instructions: 'Roll wheel forward and back' },
+    // Buikspieren
+    { name: 'Plank', muscle_group: 'buikspieren', equipment: 'lichaamsgewicht', instructions: 'Houd het lichaam recht in opdrukpositie' },
+    { name: 'Crunches', muscle_group: 'buikspieren', equipment: 'lichaamsgewicht', instructions: 'Krul het bovenlichaam naar de knieën' },
+    { name: 'Russian Twists', muscle_group: 'buikspieren', equipment: 'lichaamsgewicht', instructions: 'Draai de romp van links naar rechts' },
+    { name: 'Hanging Leg Raises', muscle_group: 'buikspieren', equipment: 'lichaamsgewicht', instructions: 'Til benen op terwijl je aan de stang hangt' },
+    { name: 'Cable Crunches', muscle_group: 'buikspieren', equipment: 'kabel', instructions: 'Crunch naar beneden met kabelweerstand' },
+    { name: 'Ab Wheel', muscle_group: 'buikspieren', equipment: 'lichaamsgewicht', instructions: 'Rol het wiel naar voren en terug' },
     
     // Cardio
-    { name: 'Running', muscle_group: 'cardio', equipment: 'bodyweight', instructions: 'Run at steady pace' },
-    { name: 'Cycling', muscle_group: 'cardio', equipment: 'machine', instructions: 'Cycle at steady pace' },
-    { name: 'Rowing', muscle_group: 'cardio', equipment: 'machine', instructions: 'Row at steady pace' },
-    { name: 'Jump Rope', muscle_group: 'cardio', equipment: 'bodyweight', instructions: 'Jump over rope continuously' },
-    { name: 'Burpees', muscle_group: 'cardio', equipment: 'bodyweight', instructions: 'Drop to push-up, jump up' },
+    { name: 'Hardlopen', muscle_group: 'cardio', equipment: 'lichaamsgewicht', instructions: 'Ren in een gestaag tempo' },
+    { name: 'Fietsen', muscle_group: 'cardio', equipment: 'machine', instructions: 'Fiets in een gestaag tempo' },
+    { name: 'Roeien', muscle_group: 'cardio', equipment: 'machine', instructions: 'Roei in een gestaag tempo' },
+    { name: 'Touwtjespringen', muscle_group: 'cardio', equipment: 'lichaamsgewicht', instructions: 'Spring continu over het touw' },
+    { name: 'Burpees', muscle_group: 'cardio', equipment: 'lichaamsgewicht', instructions: 'Zak naar opdrukstand, spring omhoog' },
   ];
   
   const insertExercise = db.prepare(
@@ -330,16 +330,16 @@ function seedDatabase() {
   
   // Seed some common foods
   const foods = [
-    { name: 'Chicken Breast', serving_size: '100g', calories: 165, protein: 31, carbs: 0, fat: 3.6 },
-    { name: 'Brown Rice', serving_size: '100g', calories: 112, protein: 2.6, carbs: 24, fat: 0.9 },
+    { name: 'Kippenborst', serving_size: '100g', calories: 165, protein: 31, carbs: 0, fat: 3.6 },
+    { name: 'Zilvervliesrijst', serving_size: '100g', calories: 112, protein: 2.6, carbs: 24, fat: 0.9 },
     { name: 'Broccoli', serving_size: '100g', calories: 34, protein: 2.8, carbs: 7, fat: 0.4 },
-    { name: 'Salmon', serving_size: '100g', calories: 208, protein: 20, carbs: 0, fat: 13 },
-    { name: 'Eggs', serving_size: '1 large', calories: 72, protein: 6, carbs: 0.4, fat: 5 },
-    { name: 'Oatmeal', serving_size: '100g', calories: 389, protein: 17, carbs: 66, fat: 7 },
-    { name: 'Banana', serving_size: '1 medium', calories: 105, protein: 1.3, carbs: 27, fat: 0.4 },
-    { name: 'Greek Yogurt', serving_size: '100g', calories: 59, protein: 10, carbs: 3.6, fat: 0.4 },
-    { name: 'Almonds', serving_size: '28g', calories: 164, protein: 6, carbs: 6, fat: 14 },
-    { name: 'Sweet Potato', serving_size: '100g', calories: 86, protein: 1.6, carbs: 20, fat: 0.1 },
+    { name: 'Zalm', serving_size: '100g', calories: 208, protein: 20, carbs: 0, fat: 13 },
+    { name: 'Eieren', serving_size: '1 grote', calories: 72, protein: 6, carbs: 0.4, fat: 5 },
+    { name: 'Havermout', serving_size: '100g', calories: 389, protein: 17, carbs: 66, fat: 7 },
+    { name: 'Banaan', serving_size: '1 middelgrote', calories: 105, protein: 1.3, carbs: 27, fat: 0.4 },
+    { name: 'Griekse Yoghurt', serving_size: '100g', calories: 59, protein: 10, carbs: 3.6, fat: 0.4 },
+    { name: 'Amandelen', serving_size: '28g', calories: 164, protein: 6, carbs: 6, fat: 14 },
+    { name: 'Zoete Aardappel', serving_size: '100g', calories: 86, protein: 1.6, carbs: 20, fat: 0.1 },
   ];
   
   const insertFood = db.prepare(

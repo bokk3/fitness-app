@@ -10,105 +10,99 @@ export default function SignUp() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false);
-  const [error, setError] = useState('');
+  const [error, setError] = useState<string | null>(null);
   const router = useRouter();
 
   const handleSignUp = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
-    setError('');
+    setError(null);
 
-    await authClient.signUp.email({
-      email,
-      password,
-      name,
-    }, {
-      onSuccess: () => {
+    try {
+      const { error } = await authClient.signUp.email({
+        email,
+        password,
+        name,
+      });
+
+      if (error) {
+        setError(error.message || "Er is een fout opgetreden bij het registreren");
+      } else {
         router.push('/');
         router.refresh();
-      },
-      onError: (ctx) => {
-        setError(ctx.error.message);
-        setLoading(false);
       }
-    });
+    } catch (err) {
+      setError("Er is een onverwachte fout opgetreden");
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
-    <div className="card" style={{ maxWidth: '500px', margin: '0 auto' }}>
-      <div className="card-header">
-        <h2 className="card-title" style={{ textAlign: 'center' }}>NEW USER REGISTRATION</h2>
-      </div>
 
-      <form onSubmit={handleSignUp} style={{ display: 'flex', flexDirection: 'column', gap: 'var(--spacing-md)' }}>
-        {error && (
-          <div style={{ 
-            backgroundColor: 'var(--color-error)', 
-            color: 'white', 
-            padding: 'var(--spacing-sm)',
-            border: 'var(--border-width) solid var(--color-border)',
-            fontWeight: 'bold',
-            textAlign: 'center'
-          }}>
-            ERROR: {error.toUpperCase()}
-          </div>
-        )}
+    <div className="w-full max-w-md p-8 border-4 border-black bg-white shadow-[8px_8px_0px_0px_rgba(0,0,0,1)]">
+      <h1 className="text-4xl font-bold mb-8 text-center uppercase tracking-tighter">REGISTREREN</h1>
+      
+      {error && (
+        <div className="mb-6 p-4 border-2 border-red-600 bg-red-50 text-red-600 font-bold text-sm">
+          FOUT: {error}
+        </div>
+      )}
 
+      <form onSubmit={handleSignUp} className="space-y-6">
         <div>
-          <label>DESIGNATION (NAME)</label>
+          <label className="block font-bold mb-2 uppercase text-sm">Naam</label>
           <input
             type="text"
             value={name}
             onChange={(e) => setName(e.target.value)}
+            className="w-full p-3 border-2 border-black focus:outline-none focus:ring-2 focus:ring-[#00ff00] font-mono"
+            placeholder="JOUW NAAM"
             required
-            placeholder="JOHN DOE"
-            style={{ textTransform: 'uppercase' }}
           />
         </div>
 
         <div>
-          <label>IDENTIFIER (EMAIL)</label>
+          <label className="block font-bold mb-2 uppercase text-sm">E-mailadres</label>
           <input
             type="email"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
+            className="w-full p-3 border-2 border-black focus:outline-none focus:ring-2 focus:ring-[#00ff00] font-mono"
+            placeholder="JOUW@EMAIL.COM"
             required
-            placeholder="USER@EXAMPLE.COM"
-            style={{ textTransform: 'uppercase' }}
           />
         </div>
-
+        
         <div>
-          <label>ACCESS CODE (PASSWORD)</label>
+          <label className="block font-bold mb-2 uppercase text-sm">Wachtwoord</label>
           <input
             type="password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
+            className="w-full p-3 border-2 border-black focus:outline-none focus:ring-2 focus:ring-[#00ff00] font-mono"
+            placeholder="••••••••"
             required
-            placeholder="********"
             minLength={8}
           />
         </div>
 
-        <button 
-          type="submit" 
-          className="btn btn-primary btn-large"
+        <button
+          type="submit"
           disabled={loading}
+          className="w-full bg-black text-white p-4 font-bold uppercase tracking-widest hover:bg-[#00ff00] hover:text-black transition-colors border-2 border-black disabled:opacity-50 disabled:cursor-not-allowed"
         >
-          {loading ? 'REGISTERING...' : 'CREATE CREDENTIALS'}
+          {loading ? "BEZIG MET LADEN..." : "REGISTREREN"}
         </button>
       </form>
 
-      <div style={{ marginTop: 'var(--spacing-lg)', textAlign: 'center' }}>
-        <p>ALREADY REGISTERED?</p>
-        <Link href="/signin" style={{ 
-          color: 'var(--color-accent-dark)', 
-          fontWeight: '900', 
-          textDecoration: 'none',
-          borderBottom: '2px solid var(--color-accent-dark)'
-        }}>
-          INITIATE SESSION
-        </Link>
+      <div className="mt-8 text-center">
+        <p className="text-sm font-bold">
+          AL EEN ACCOUNT?{" "}
+          <Link href="/signin" className="text-[#00aa00] hover:underline uppercase">
+            LOG HIER IN
+          </Link>
+        </p>
       </div>
     </div>
   );

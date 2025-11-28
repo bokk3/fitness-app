@@ -9,7 +9,7 @@ export default function WorkoutsPage() {
 
   return (
     <div>
-      <h1>Workouts</h1>
+      <h1>Trainingen</h1>
       
       <div className="grid grid-2" style={{ marginBottom: 'var(--spacing-lg)' }}>
         <div>
@@ -22,9 +22,9 @@ export default function WorkoutsPage() {
           <Calendar onDateClick={(date) => setSelectedDate(date)} />
           {selectedDate && (
             <div className="card" style={{ marginTop: 'var(--spacing-md)' }}>
-              <h4>Selected Date: {new Date(selectedDate).toLocaleDateString()}</h4>
+              <h4>Geselecteerde Datum: {new Date(selectedDate).toLocaleDateString('nl-NL')}</h4>
               <p style={{ fontSize: '0.875rem', margin: 0 }}>
-                Click on a date to view workout details (feature coming soon)
+                Klik op een datum om trainingsdetails te bekijken (functie binnenkort beschikbaar)
               </p>
             </div>
           )}

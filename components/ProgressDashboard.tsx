@@ -65,35 +65,35 @@ export default function ProgressDashboard() {
           onClick={() => setTimeRange('month')}
           className={`btn btn-small ${timeRange === 'month' ? 'btn-primary' : ''}`}
         >
-          Month
+          Maand
         </button>
         <button
           onClick={() => setTimeRange('year')}
           className={`btn btn-small ${timeRange === 'year' ? 'btn-primary' : ''}`}
         >
-          Year
+          Jaar
         </button>
       </div>
 
       <div className="grid grid-3" style={{ marginBottom: 'var(--spacing-lg)' }}>
         <div className="stat-card">
           <div className="stat-value">{totalWorkouts}</div>
-          <div className="stat-label">Total Workouts</div>
+          <div className="stat-label">Totaal Trainingen</div>
         </div>
         <div className="stat-card">
           <div className="stat-value">{currentWeight || '--'}</div>
-          <div className="stat-label">Current Weight (kg)</div>
+          <div className="stat-label">Huidig Gewicht (kg)</div>
         </div>
         <div className="stat-card">
           <div className="stat-value">{avgVolume}</div>
-          <div className="stat-label">Avg Volume (kg)</div>
+          <div className="stat-label">Gem. Volume (kg)</div>
         </div>
       </div>
 
       {weightData.length > 0 && (
         <div className="card" style={{ marginBottom: 'var(--spacing-lg)' }}>
           <div className="card-header">
-            <h3 className="card-title">Weight Progress</h3>
+            <h3 className="card-title">Gewichtsverloop</h3>
           </div>
           <ResponsiveContainer width="100%" height={300}>
             <LineChart data={weightData}>
@@ -130,7 +130,7 @@ export default function ProgressDashboard() {
       {volumeData.length > 0 && (
         <div className="card">
           <div className="card-header">
-            <h3 className="card-title">Training Volume</h3>
+            <h3 className="card-title">Trainingsvolume</h3>
           </div>
           <ResponsiveContainer width="100%" height={300}>
             <BarChart data={volumeData}>
@@ -160,8 +160,8 @@ export default function ProgressDashboard() {
 
       {weightData.length === 0 && volumeData.length === 0 && (
         <div className="card" style={{ textAlign: 'center', padding: 'var(--spacing-xl)' }}>
-          <h3>NO DATA YET</h3>
-          <p>Start logging workouts and measurements to see your progress!</p>
+          <h3>NOG GEEN GEGEVENS</h3>
+          <p>Begin met het loggen van trainingen en metingen om je voortgang te zien!</p>
         </div>
       )}
     </div>

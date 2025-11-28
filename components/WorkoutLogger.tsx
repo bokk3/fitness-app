@@ -60,7 +60,7 @@ export default function WorkoutLogger({ onSave }: { onSave?: () => void }) {
 
   const saveWorkout = async () => {
     if (workoutExercises.length === 0) {
-      alert('Add at least one exercise');
+      alert('Voeg ten minste één oefening toe');
       return;
     }
 
@@ -84,17 +84,17 @@ export default function WorkoutLogger({ onSave }: { onSave?: () => void }) {
       });
 
       if (res.ok) {
-        alert('Workout saved!');
+        alert('Training opgeslagen!');
         setWorkoutExercises([]);
         setNotes('');
         setDuration('');
         if (onSave) onSave();
       } else {
-        alert('Failed to save workout');
+        alert('Opslaan van training mislukt');
       }
     } catch (error) {
       console.error('Error saving workout:', error);
-      alert('Error saving workout');
+      alert('Fout bij opslaan van training');
     } finally {
       setLoading(false);
     }
@@ -103,12 +103,12 @@ export default function WorkoutLogger({ onSave }: { onSave?: () => void }) {
   return (
     <div className="card">
       <div className="card-header">
-        <h3 className="card-title">Log Workout</h3>
+        <h3 className="card-title">Training Loggen</h3>
       </div>
 
       <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--spacing-md)' }}>
         <div>
-          <label>Date</label>
+          <label>Datum</label>
           <input
             type="date"
             value={date}
@@ -117,7 +117,7 @@ export default function WorkoutLogger({ onSave }: { onSave?: () => void }) {
         </div>
 
         <div>
-          <label>Duration (minutes)</label>
+          <label>Duur (minuten)</label>
           <input
             type="number"
             value={duration}
@@ -127,14 +127,14 @@ export default function WorkoutLogger({ onSave }: { onSave?: () => void }) {
         </div>
 
         <div>
-          <label>Add Exercise</label>
+          <label>Oefening Toevoegen</label>
           <div style={{ display: 'flex', gap: 'var(--spacing-sm)' }}>
             <select
               value={selectedExerciseId}
               onChange={(e) => setSelectedExerciseId(Number(e.target.value))}
               style={{ flex: 1 }}
             >
-              <option value={0}>Select exercise...</option>
+              <option value={0}>Selecteer oefening...</option>
               {exercises.map(ex => (
                 <option key={ex.id} value={ex.id}>
                   {ex.name} ({ex.muscle_group})
@@ -142,14 +142,14 @@ export default function WorkoutLogger({ onSave }: { onSave?: () => void }) {
               ))}
             </select>
             <button onClick={addExercise} className="btn btn-primary">
-              Add
+              Toevoegen
             </button>
           </div>
         </div>
 
         {workoutExercises.length > 0 && (
           <div>
-            <h4 style={{ marginBottom: 'var(--spacing-sm)' }}>Exercises</h4>
+            <h4 style={{ marginBottom: 'var(--spacing-sm)' }}>Oefeningen</h4>
             {workoutExercises.map((ex, index) => (
               <div
                 key={index}
@@ -159,7 +159,7 @@ export default function WorkoutLogger({ onSave }: { onSave?: () => void }) {
                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 'var(--spacing-sm)' }}>
                   <strong style={{ textTransform: 'uppercase' }}>{ex.exercise_name}</strong>
                   <button onClick={() => removeExercise(index)} className="btn btn-small">
-                    Remove
+                    Verwijder
                   </button>
                 </div>
                 <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 'var(--spacing-sm)' }}>
@@ -173,7 +173,7 @@ export default function WorkoutLogger({ onSave }: { onSave?: () => void }) {
                     />
                   </div>
                   <div>
-                    <label>Reps</label>
+                    <label>Herhalingen</label>
                     <input
                       type="number"
                       value={ex.reps}
@@ -182,7 +182,7 @@ export default function WorkoutLogger({ onSave }: { onSave?: () => void }) {
                     />
                   </div>
                   <div>
-                    <label>Weight (kg)</label>
+                    <label>Gewicht (kg)</label>
                     <input
                       type="number"
                       value={ex.weight}
@@ -193,12 +193,12 @@ export default function WorkoutLogger({ onSave }: { onSave?: () => void }) {
                   </div>
                 </div>
                 <div style={{ marginTop: 'var(--spacing-sm)' }}>
-                  <label>Notes</label>
+                  <label>Notities</label>
                   <input
                     type="text"
                     value={ex.notes}
                     onChange={(e) => updateExercise(index, 'notes', e.target.value)}
-                    placeholder="Optional notes..."
+                    placeholder="Optionele notities..."
                   />
                 </div>
               </div>
@@ -207,11 +207,11 @@ export default function WorkoutLogger({ onSave }: { onSave?: () => void }) {
         )}
 
         <div>
-          <label>Workout Notes</label>
+          <label>Training Notities</label>
           <textarea
             value={notes}
             onChange={(e) => setNotes(e.target.value)}
-            placeholder="How did the workout go?"
+            placeholder="Hoe ging de training?"
             rows={3}
           />
         </div>
@@ -221,7 +221,7 @@ export default function WorkoutLogger({ onSave }: { onSave?: () => void }) {
           disabled={loading || workoutExercises.length === 0}
           className="btn btn-primary btn-large"
         >
-          {loading ? 'SAVING...' : 'SAVE WORKOUT'}
+          {loading ? 'OPSLAAN...' : 'TRAINING OPSLAAN'}
         </button>
       </div>
     </div>

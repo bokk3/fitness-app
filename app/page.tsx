@@ -9,16 +9,16 @@ export default function HomePage() {
       
       <div className="grid grid-2" style={{ marginBottom: 'var(--spacing-lg)' }}>
         <div>
-          <h2>Today's Workout</h2>
+          <h2>Training van Vandaag</h2>
           <WorkoutLogger />
         </div>
         <div>
-          <h2>Calendar</h2>
+          <h2>Kalender</h2>
           <Calendar />
         </div>
       </div>
 
-      <h2>Progress Overview</h2>
+      <h2>Voortgangsoverzicht</h2>
       <ProgressDashboard />
     </div>
   );
